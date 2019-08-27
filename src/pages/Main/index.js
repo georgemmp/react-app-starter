@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { Container, Form } from './style';
 
 import logo from '../../assets/logo.png';
+import moment from 'moment';
+
 import CompareList from '../../components/CompareList';
 import api from '../../services/api';
 
@@ -16,8 +18,9 @@ export default class Main extends Component {
         e.preventDefault();
 
         try {
-            const response = await api.get(`/repos/${this.state.repositoryInput}`);
-            this.setState({repositories: [...this.state.repositories, response.data]})
+            const { data } = await api.get(`/repos/${this.state.repositoryInput}`);
+            data.lastCommit = moment(data.pushed_at).fromNow();
+            this.setState({repositories: [...this.state.repositories, data], repositoryInput: ''})
         } catch (error) {
             console.log(error);
         }

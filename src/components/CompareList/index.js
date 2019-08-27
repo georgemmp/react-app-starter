@@ -9,7 +9,7 @@ const CompareList = ({ repositories }) => (
             <Repository key={item.id}>
                 <header>
                     <img src={item.owner.avatar_url} alt={item.owner.login}/>
-                    <strong>{item.nome}</strong>
+                    <strong>{item.name}</strong>
                     <small>{item.owner.login}</small>
                 </header>
 
@@ -24,7 +24,7 @@ const CompareList = ({ repositories }) => (
                         {item.open_issues_count} <small>issues</small>
                     </li>
                     <li>
-                        {item.pushed_at} <small>last commit</small>
+                        {item.lastCommit} <small>last commit</small>
                     </li>
                 </ul>
             </Repository>
