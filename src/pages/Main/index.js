@@ -11,7 +11,8 @@ import api from '../../services/api';
 export default class Main extends Component {
     state = {
         repositories: [],
-        repositoryInput: ''
+        repositoryInput: '',
+        repositoryError: false
     };
 
     handleAddRepository = async (e) => {
@@ -20,9 +21,15 @@ export default class Main extends Component {
         try {
             const { data } = await api.get(`/repos/${this.state.repositoryInput}`);
             data.lastCommit = moment(data.pushed_at).fromNow();
-            this.setState({repositories: [...this.state.repositories, data], repositoryInput: ''})
+            this.setState(
+                { 
+                    repositories: [...this.state.repositories, data], 
+                    repositoryInput: '',
+                    repositoryError: false
+                }
+            );
         } catch (error) {
-            console.log(error);
+            this.setState({repositoryError: true});
         }
     };
 
@@ -31,7 +38,7 @@ export default class Main extends Component {
             <Container>
                 <img src={logo} alt="GitHub Compare" />
                 
-                <Form onSubmit={this.handleAddRepository}>
+                <Form withError={this.state.repositoryError} onSubmit={this.handleAddRepository}>
                     <input 
                         value={this.state.repositoryInput}
                         type="text" 
