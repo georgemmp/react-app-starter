@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { Container, Form } from './style';
 
 import logo from '../../assets/logo.png';
-import CompareList from '../../components/CompareList'
+import CompareList from '../../components/CompareList';
+import api from '../../services/api';
 
 export default class Main extends Component {
     state = {
@@ -11,8 +12,15 @@ export default class Main extends Component {
         repositoryInput: ''
     };
 
-    handleAddRepository = (e) => {
+    handleAddRepository = async (e) => {
         e.preventDefault();
+
+        try {
+            const response = await api.get(`/repos/${this.state.repositoryInput}`);
+            this.setState({repositories: [...this.state.repositories, response.data]})
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     render() {
